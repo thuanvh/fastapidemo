@@ -32,13 +32,4 @@ async def get_item(id: Annotated[int, Path(title="The ID of the item to get", ge
     
     return 
 
-@app.get("/")
-def hello_world():
-    return {'message': 'Hello from FastAPI'}
-
-
-@app.get("/hello/{name}")
-def hello(name: str):
-    return {"message": f'Hello from FastAPI, {name}!'}
-
 handler = Mangum(app)
