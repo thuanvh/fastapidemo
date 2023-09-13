@@ -2,19 +2,8 @@ from typing import Annotated
 from fastapi import FastAPI, Path
 from pydantic import BaseModel, Field
 from mangum import Mangum
+from book import Book
 
-class Book(BaseModel):
-    id: int
-    author: int
-    name: str = Field(
-        default='', title="Name of the book", max_length=300
-    )
-    note: str | None = Field(
-        default=None, title="Note of the book", max_length=1000
-    )
-    serial: str | None = Field(
-        default='', title="Serial of the book", max_length=100
-    )
 
 app = FastAPI()
 

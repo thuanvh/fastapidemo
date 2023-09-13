@@ -1,2 +1,5 @@
 fastapi
 mangum
+pytest
+aws-lambda-powertools
+jmespath
