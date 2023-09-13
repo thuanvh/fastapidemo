@@ -18,10 +18,24 @@ def test_invalid_serial_too_long():
     with pytest.raises(ValidationError):
         Book(serial='a'*101, id=4, author=1)
         
-def test_invalid_id():
+def test_invalid_id_zero():
     with pytest.raises(ValidationError):
         Book(name='a'*301, id=0, author=1)
+def test_invalid_id_negative():
+    with pytest.raises(ValidationError):
+        Book(name='a'*301, id=-1, author=1)
+def test_invalid_id_type():
+    with pytest.raises(ValidationError):
+        Book(name='a'*301, id='', author=1)
 
-def test_invalid_author():
+def test_invalid_author_zero():
     with pytest.raises(ValidationError):
         Book(name='a'*301, id=1, author=0)
+
+def test_invalid_author_negative():
+    with pytest.raises(ValidationError):
+        Book(name='a'*301, id=1, author=-1)        
+
+def test_invalid_author_type():
+    with pytest.raises(ValidationError):
+        Book(name='a'*301, id=1, author='')
