@@ -1,6 +1,7 @@
 from typing import Annotated
 from fastapi import FastAPI, Path
 from pydantic import BaseModel, Field
+from mangum import Mangum
 
 class Book(BaseModel):
     id: int
@@ -31,12 +32,13 @@ async def get_item(id: Annotated[int, Path(title="The ID of the item to get", ge
     
     return 
 
-# https://<api-gateway-url>/api/books
-# Body (application/json):
-# {
-# "id": "/books/id1",
-# "author": "/authors/id1",
-# "name": "Fancy Tech",
-# "note": "Awesome book for beginners in Fancy.",
-# "serial": "C040102"
-# }
+@app.get("/")
+def hello_world():
+    return {'message': 'Hello from FastAPI'}
+
+
+@app.get("/hello/{name}")
+def hello(name: str):
+    return {"message": f'Hello from FastAPI, {name}!'}
+
+handler = Mangum(app)
