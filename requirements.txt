@@ -3,3 +3,4 @@ mangum
 pytest
 aws-lambda-powertools
 jmespath
+boto3
