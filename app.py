@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import FastAPI, Path, status
+from fastapi import FastAPI, Path, status, HTTPException
 from pydantic import BaseModel, Field
 from mangum import Mangum
 from book import Book
