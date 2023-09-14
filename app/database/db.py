@@ -13,25 +13,16 @@ tables = [
         
         "AttributeDefinitions": [
             {
-                'AttributeName': 'Id',
-                'AttributeType': 'N'
-            },
-            {
-                'AttributeName': 'AuthorId',
-                'AttributeType': 'N'
+                'AttributeName': 'id',
+                'AttributeType': 'S'
             }
         ],
 
         "KeySchema": [
             {
-                'AttributeName': 'Id',
+                'AttributeName': 'id',
                 'KeyType': 'HASH'
-            },
-            {
-                'AttributeName': 'AuthorId',
-                'KeyType': 'RANGE'
-            },
-
+            }
         ],
     },
 ]
