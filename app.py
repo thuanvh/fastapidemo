@@ -54,7 +54,7 @@ async def get_item(id: Annotated[int, Path(title="The ID of the item to get", ge
         name= item.get('name').get('S'),
         note= item.get('note').get('S'),
         serial= item.get('serial').get('S'),
-    }
+    )
     
 
 handler = Mangum(app)
