@@ -42,7 +42,7 @@ async def create_item(book: Book):
     status_code=status.HTTP_200_OK,
     response_model=Book,
     )
-async def get_item(id: Annotated[str, Path(title="The ID of the item to get", ge = 1)]):
+async def get_item(id: Annotated[str, Path(title="The ID of the item to get")]):
     
     resp = client.get_item(
         TableName=BOOKS_TABLE,
