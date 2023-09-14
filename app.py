@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path, status
 from pydantic import BaseModel, Field
 from mangum import Mangum
 from book import Book
@@ -40,7 +40,7 @@ async def get_item(id: Annotated[int, Path(title="The ID of the item to get", ge
     resp = client.get_item(
         TableName=USERS_TABLE,
         Key={
-            'id': { 'N': id }
+            'id': { 'N': str(id) }
         }
     )
     item = resp.get('Item')
