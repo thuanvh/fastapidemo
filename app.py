@@ -13,15 +13,10 @@ USERS_TABLE = os.environ['USERS_TABLE']
 
 list = []
 @app.post("/books",
-    # status_code=status.HTTP_201_CREATED,
-    # response_model=ProductSchemaOut,
+    status_code=status.HTTP_201_CREATED,
+    response_model=Book,
 )
 async def create_item(book: Book):
-    # user_id = request.json.get('userId')
-    # name = request.json.get('name')
-    # if not user_id or not name:
-    #     return jsonify({'error': 'Please provide userId and name'}), 400
- 
     resp = client.put_item(
         TableName=USERS_TABLE,
         Item={
@@ -33,18 +28,12 @@ async def create_item(book: Book):
         }
     )
  
-    return {
-        'id': book.id,
-        'name': book.name,
-    }
-    
-    # list.append(book)
-    
     return book
+    
 
 @app.get("/books/{id}",
-    # status_code=status.HTTP_200_OK,
-    # response_model=ProductSchemaOut,
+    status_code=status.HTTP_200_OK,
+    response_model=Book,
     )
 async def get_item(id: Annotated[int, Path(title="The ID of the item to get", ge = 1)]):
     
@@ -56,18 +45,16 @@ async def get_item(id: Annotated[int, Path(title="The ID of the item to get", ge
     )
     item = resp.get('Item')
     if not item:
-        #return jsonify({'error': 'User does not exist'}), 404
-        return {'error': 'Book does not exist'}
+        raise HTTPException(status_code= status.HTTP_404_NOT_FOUND,
+                            detail=f"Book with id:{id} was not found")
  
-    return {
-        'userId': item.get('userId').get('S'),
-        'name': item.get('name').get('S')
+    return Book(
+        id= item.get('id').get('N'),
+        author= item.get('author').get('N'),
+        name= item.get('name').get('S'),
+        note= item.get('note').get('S'),
+        serial= item.get('serial').get('S'),
     }
     
-    # for book in list:
-    #     if book.id == id:
-    #         return book
-    
-    # return 
 
 handler = Mangum(app)
