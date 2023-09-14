@@ -25,8 +25,8 @@ async def create_item(book: Book):
     resp = client.put_item(
         TableName=USERS_TABLE,
         Item={
-            'id': {'N': book.id },
-            'author': {'N': book.author },
+            'id': {'N': str(book.id) },
+            'author': {'N': str(book.author) },
             'name': {'S': book.name },
             'note': {'S': book.note },
             'serial': {'S': book.serial },
