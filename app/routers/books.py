@@ -5,40 +5,45 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from mangum import Mangum
-from book import Book
+from ..database.book import Book
 import os
 import boto3
+from fastapi import APIRouter
+
 client = boto3.client('dynamodb')
 
-app = FastAPI()
+# app = FastAPI()
 
-USERS_TABLE = os.environ['USERS_TABLE']
+BOOKS_TABLE = os.environ['BOOKS_TABLE']
 
-list = []
 
-@app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    # Get the original 'detail' list of errors
-    details = exc.errors()
-    modified_details = []
-    # Replace 'msg' with 'message' for each error
-    for error in details:
-        modified_details.append(str(error["loc"]) + " " + error["msg"])
-    return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content=jsonable_encoder({"detail": modified_details}),
-    )
-    
-@app.post("/books",
+router = APIRouter()
+
+
+# @router.get("/users/", tags=["users"])
+# async def read_users():
+#     return [{"username": "Rick"}, {"username": "Morty"}]
+
+
+# @router.get("/users/me", tags=["users"])
+# async def read_user_me():
+#     return {"username": "fakecurrentuser"}
+
+
+# @router.get("/users/{username}", tags=["users"])
+# async def read_user(username: str):
+#     return {"username": username}
+
+@router.post("/books", tags=["books"],
     status_code=status.HTTP_201_CREATED,
     response_model=Book,
 )
 async def create_item(book: Book):
     resp = client.put_item(
-        TableName=USERS_TABLE,
+        TableName=BOOKS_TABLE,
         Item={
-            'id': {'N': str(book.id) },
-            'author': {'N': str(book.author) },
+            'id': {'S': book.id },
+            'author': {'S': book.author },
             'name': {'S': book.name },
             'note': {'S': book.note },
             'serial': {'S': book.serial },
@@ -48,14 +53,14 @@ async def create_item(book: Book):
     return book
     
 
-@app.get("/books/{id}",
+@router.get("/books/{id}", tags=["books"],
     status_code=status.HTTP_200_OK,
     response_model=Book,
     )
 async def get_item(id: Annotated[int, Path(title="The ID of the item to get", ge = 1)]):
     
     resp = client.get_item(
-        TableName=USERS_TABLE,
+        TableName=BOOKS_TABLE,
         Key={
             'id': { 'N': str(id) }
         }
@@ -66,12 +71,11 @@ async def get_item(id: Annotated[int, Path(title="The ID of the item to get", ge
                             detail=f"Book with id:{id} was not found")
  
     return Book(
-        id= item.get('id').get('N'),
-        author= item.get('author').get('N'),
+        id= item.get('id').get('S'),
+        author= item.get('author').get('S'),
         name= item.get('name').get('S'),
         note= item.get('note').get('S'),
         serial= item.get('serial').get('S'),
     )
     
 
-handler = Mangum(app)

@@ -2,7 +2,7 @@ service: serverless-fastapi
 frameworkVersion: '3'
 
 custom:
-  tableName: 'book-table-${self:provider.stage}'
+  tableName: 'book-${self:provider.stage}'
 
 provider:
   name: aws
@@ -21,11 +21,11 @@ provider:
       Resource:
         - { "Fn::GetAtt": ["bookTable", "Arn" ] }
   environment:
-    USERS_TABLE: ${self:custom.tableName}
+    BOOKS_TABLE: ${self:custom.tableName}
 
 functions:
   api:
-    handler: app.handler
+    handler: app.main.handler
     events:
       - httpApi: '*'
 
@@ -36,7 +36,7 @@ resources:
       Properties:
         AttributeDefinitions:
           - AttributeName: id
-            AttributeType: N
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
@@ -49,6 +49,7 @@ package:
   exclude:
     - node_modules/**
     - .venv/**
+    - __pycache__
 
 plugins:
   - serverless-python-requirements

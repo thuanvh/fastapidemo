@@ -1,8 +1,12 @@
 from pydantic import BaseModel, Field, PositiveInt
 
 class Book(BaseModel):
-    id: PositiveInt
-    author: PositiveInt
+    id: str = Field(
+        default='/books/id1', title="Name of the book", min_length=1, max_length=50
+    )
+    author: str = Field(
+        default='/authors/id1', title="Author of the book", min_length=1, max_length=50
+    )
     name: str = Field(
         title="Name of the book", min_length=1, max_length=300
     )
