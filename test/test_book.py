@@ -25,3 +25,16 @@ def test_invalid_id_too_long():
 def test_invalid_author_too_long():
     with pytest.raises(ValidationError):
         Book(name='a'*30, id='1', author='a'*51)
+
+def test_invalid_id_pattern():
+    with pytest.raises(ValidationError):
+        Book(name='a', id='abcdefghij', author='/authors/1')
+        
+
+def test_invalid_author_pattern():
+    with pytest.raises(ValidationError):
+        Book(name='a', id='/books/1', author='abcdefghij')
+    
+def test_valid():
+    Book(name='a', id='/books/1', author='/authors/2')
+

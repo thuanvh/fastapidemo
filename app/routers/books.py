@@ -19,21 +19,6 @@ BOOKS_TABLE = os.environ['BOOKS_TABLE']
 
 router = APIRouter()
 
-
-# @router.get("/users/", tags=["users"])
-# async def read_users():
-#     return [{"username": "Rick"}, {"username": "Morty"}]
-
-
-# @router.get("/users/me", tags=["users"])
-# async def read_user_me():
-#     return {"username": "fakecurrentuser"}
-
-
-# @router.get("/users/{username}", tags=["users"])
-# async def read_user(username: str):
-#     return {"username": username}
-
 @router.post("/books", tags=["books"],
     status_code=status.HTTP_201_CREATED,
     response_model=Book,
@@ -57,12 +42,12 @@ async def create_item(book: Book):
     status_code=status.HTTP_200_OK,
     response_model=Book,
     )
-async def get_item(id: Annotated[int, Path(title="The ID of the item to get", ge = 1)]):
+async def get_item(id: Annotated[str, Path(title="The ID of the item to get", ge = 1)]):
     
     resp = client.get_item(
         TableName=BOOKS_TABLE,
         Key={
-            'id': { 'N': str(id) }
+            'id': { 'N': '/books/' + id }
         }
     )
     item = resp.get('Item')
