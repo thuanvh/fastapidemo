@@ -29,19 +29,22 @@ functions:
   api:
     handler: app.main.handler
     events:
-      # - httpApi:
-      #     method: POST
-      #     path: /api/books
-      # - httpApi:
-      #     method: GET
-      #     path: /api/books/{param}
-      # - httpApi:
-      #     method: '*'
-      #     path: /docs
+      - httpApi:
+          method: POST
+          path: /api/books
+      - httpApi:
+          method: GET
+          path: /api/books/{param}
+      - httpApi:
+          method: GET
+          path: /docs
+      - httpApi:
+          method: GET
+          path: /openapi.json
       # - httpApi:
       #     method: '*'
       #     path: /api/{proxy}
-      - httpApi: '*'
+      # - httpApi: '*'
 
 resources:
   Resources:
