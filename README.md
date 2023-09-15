@@ -1,7 +1,18 @@
 # fastapidemo
 
-# Setup environment
+# Setup development environment
+Create Python virtual environment
+```
+mkdir .venv
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+Install Serverless
+```
+npm 
 
+```
 # Deployment
 --------------------------------
 ```

@@ -47,7 +47,7 @@ async def get_item(id: Annotated[str, Path(title="The ID of the item to get")]):
     resp = client.get_item(
         TableName=BOOKS_TABLE,
         Key={
-            'id': { 'N': '/books/' + id }
+            'id': { 'S': '/books/' + id }
         }
     )
     item = resp.get('Item')

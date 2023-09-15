@@ -25,7 +25,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
     
 
-app.include_router(books.router)
+app.include_router(books.router, prefix="/api")
 
 @app.get("/ping")
 async def ping():

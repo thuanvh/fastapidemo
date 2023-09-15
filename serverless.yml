@@ -22,11 +22,25 @@ provider:
         - { "Fn::GetAtt": ["bookTable", "Arn" ] }
   environment:
     BOOKS_TABLE: ${self:custom.tableName}
+  httpApi:
+    cors: true
 
 functions:
   api:
     handler: app.main.handler
     events:
+      # - httpApi:
+      #     method: POST
+      #     path: /api/books
+      # - httpApi:
+      #     method: GET
+      #     path: /api/books/{param}
+      # - httpApi:
+      #     method: '*'
+      #     path: /docs
+      # - httpApi:
+      #     method: '*'
+      #     path: /api/{proxy}
       - httpApi: '*'
 
 resources:
@@ -53,3 +67,4 @@ package:
 
 plugins:
   - serverless-python-requirements
+  - serverless-openapi-documenter

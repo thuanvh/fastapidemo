@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "serverless-openapi-documenter": "^0.0.72",
     "serverless-python-requirements": "^6.0.0"
   }
 }
