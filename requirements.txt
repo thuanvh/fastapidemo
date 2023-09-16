@@ -4,3 +4,6 @@ pytest
 aws-lambda-powertools
 jmespath
 boto3
+cdk
+requests
+pyyaml
