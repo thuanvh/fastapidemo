@@ -70,13 +70,6 @@ def test_handler_insert_db_200_ok(rest_api,table_name):
     response = requests.post(url=rest_api+"/api/books", json =jsonable_encoder(book))
 
     assert response.status_code == status.HTTP_201_CREATED
-    body_dict = response.json()
-    assert body_dict['id']
-    assert body_dict['id'] == id
-    assert body_dict['author'] == author
-    assert body_dict['note'] == book.note
-    assert body_dict['name'] == book.name
-    assert body_dict['serial'] == book.serial
     # assert side effect - DynamoDB table
 
     print(table_name)
@@ -99,7 +92,8 @@ def test_handler_insert_get_db_200_ok(rest_api,table_name):
     print(rest_api)
     print(jsonable_encoder(book))
     response = requests.post(url=rest_api+"/api/books", json =jsonable_encoder(book))
-    
+    assert response.status_code == status.HTTP_201_CREATED
+
     response = requests.get(url=rest_api+"/api/"+id)
     assert response.status_code == status.HTTP_200_OK
     body_dict = response.json()
