@@ -27,10 +27,11 @@ class BookDB :
                 'name': {'S': book.name },
                 'note': {'S': book.note },
                 'serial': {'S': book.serial },
-            }
+            },
+            ReturnValues='ALL_OLD',
         )
         print(resp)
-        return book
+        return resp
         
     def get_item(self, id: str):
         resp = get_db_client().get_item(

@@ -9,9 +9,9 @@ curl -X 'POST' \
   -d '{
   "id": "/books/id1",
   "author": "/authors/id1",
-  "name": "Hello world",
+  "name": "Hello World",
   "note": "Good book",
-  "serial": "alk12314"
+  "serial": "alk12314123"
 }'
 
 
