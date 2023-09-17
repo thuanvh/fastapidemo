@@ -68,6 +68,7 @@ package:
     - .venv/**
     - __pycache__
     - .env
+    - docs/**
 
 plugins:
   - serverless-python-requirements

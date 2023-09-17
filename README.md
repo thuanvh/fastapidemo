@@ -36,6 +36,8 @@ Test scripts :
 - test_db.py    Test with database integration
 - test_integration.py Test with integration of API
 
+The testing script using pytest for testing, boto3 for query REST API url and DynamoDB checking inserted data.
+
 Run the test script as the following command
 ```
 pytest
@@ -77,6 +79,6 @@ script/
 The configuration of serverless is in the [/serverless.yml](https://github.com/thuanvh/fastapidemo/blob/main/serverless.yml) file
 
 The serverless.yml including :
-- AWS DynamoDB configuration
-- AWS Lambda configuration (regional)
+- AWS DynamoDB configuration (Schema, Table name)
+- AWS Lambda configuration (regional, handler function)
 - AWS Gateway API for ```/books, /books/id, /docs```
