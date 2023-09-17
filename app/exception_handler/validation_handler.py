@@ -10,6 +10,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     for error in details:
         modified_details.append(str(error["loc"]) + " " + error["msg"])
     return JSONResponse(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        status_code=status.HTTP_400_BAD_REQUEST,
         content=jsonable_encoder({"detail": modified_details}),
     )

@@ -105,7 +105,7 @@ def test_handler_insert_get_db_200_ok(rest_api,table_name):
     assert body_dict['name'] == book.name
     assert body_dict['serial'] == book.serial
 
-def test_handler_insert_get_db_422_ok(rest_api):
+def test_handler_insert_get_db_400(rest_api):
     response = requests.post(url=rest_api+"/api/books", json ={
         "id": "/books/",
         "author": "/authors/id1",
@@ -113,5 +113,5 @@ def test_handler_insert_get_db_422_ok(rest_api):
         "note": "Good book",
         "serial": "alk12314123"
         })
-    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
 
