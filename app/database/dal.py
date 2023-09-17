@@ -10,6 +10,7 @@ import os
 import boto3
 from fastapi import APIRouter
 from app.database.db import get_db_client
+
 class BookDB :
     _table : str
     def __init__(self, table):
@@ -31,7 +32,7 @@ class BookDB :
             ReturnValues='ALL_OLD',
         )
         print(resp)
-        return resp
+        #return resp
         
     def get_item(self, id: str):
         resp = get_db_client().get_item(

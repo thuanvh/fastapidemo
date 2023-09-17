@@ -2,21 +2,26 @@ from pydantic import BaseModel, Field, PositiveInt
 
 class Book(BaseModel):
     id: str = Field(
-        default='/books/id1', title="Name of the book", 
+        title="Name of the book", 
         min_length=8, max_length=50,
-        pattern='/books/.*'
+        pattern='/books/.*',
+        required=True
     )
     author: str = Field(
-        default='/authors/id1', title="Author of the book",
+        title="Author of the book",
         min_length=9, max_length=50,
-        pattern='/authors/.*'
+        pattern='/authors/.*',
+        required=True
     )
     name: str = Field(
-        title="Name of the book", min_length=1, max_length=300
+        title="Name of the book", min_length=1, max_length=300,
+        required=True
     )
     note: str = Field(
-        default='', title="Note of the book", max_length=1000
+        title="Note of the book", max_length=1000,
+        required=True
     )
     serial: str = Field(
-        default='', title="Serial of the book", max_length=100
+        title="Serial of the book", max_length=100,
+        required=True
     )

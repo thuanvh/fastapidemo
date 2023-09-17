@@ -1,7 +1,7 @@
 from typing import Annotated
 from fastapi import FastAPI, Path, Request, status, HTTPException
 from fastapi.encoders import jsonable_encoder
-from fastapi.exceptions import RequestValidationError
+from fastapi.exceptions import ValidationException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from mangum import Mangum
@@ -21,12 +21,11 @@ from app.database.db import get_book_table_name
 router = APIRouter()
 
 @router.post("/books", tags=["books"],
-    status_code=status.HTTP_201_CREATED,
-    response_model=Book,
+    status_code=status.HTTP_201_CREATED
 )
 async def create_item(book: Book):
     book = BookDB(get_book_table_name()).create_item(book)
-    return book
+    return jsonable_encoder({"message": "Book created successfully"})
 
     # BOOKS_TABLE = os.environ['BOOKS_TABLE']
     
