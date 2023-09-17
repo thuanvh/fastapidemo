@@ -67,7 +67,7 @@ package:
     - node_modules/**
     - .venv/**
     - __pycache__
+    - .env
 
 plugins:
   - serverless-python-requirements
-  - serverless-openapi-documenter

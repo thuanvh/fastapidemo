@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 from mangum import Mangum
 import os
 from .routers import books
-from exception_handler.validation_handler import validation_exception_handler
+from .exception_handler.validation_handler import validation_exception_handler
 
 app = FastAPI()
     

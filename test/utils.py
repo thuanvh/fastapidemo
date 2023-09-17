@@ -23,14 +23,17 @@ def get_stack_name()->str:
     with open('serverless.yml', 'r') as file:
         yamlfile = yaml.safe_load(file)
         return yamlfile['service']+'-'+yamlfile['provider']['stage']
+    
 def get_region()->str:
     with open('serverless.yml', 'r') as file:
         yamlfile = yaml.safe_load(file)
         return yamlfile['provider']['region']
+    
 def get_table_name()->str:
     with open('.serverless/serverless-state.json', 'r') as file:
         a = json.load(file)
         return a['service']['custom']['tableName']
+    
 def get_stack_output(output_key: str) -> str:
     client = boto3.client('cloudformation')
     response = client.describe_stacks(StackName=get_stack_name())

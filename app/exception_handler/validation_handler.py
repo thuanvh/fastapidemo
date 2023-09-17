@@ -1,14 +1,9 @@
-from typing import Annotated
-from fastapi import FastAPI, Path, Request, status, HTTPException
+from fastapi import Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
-from mangum import Mangum
-from database.book import Book
 
 
-@app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     details = exc.errors()
     modified_details = []
