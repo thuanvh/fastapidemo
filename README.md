@@ -15,7 +15,9 @@ pip install -r requirements.txt
 ```
 Install Serverless
 ```
-npm -g serverless
+npm install -g serverless
+npm install --save-dev serverless-python-requirements
+
 ```
 Run configuration for serverless environment including AWS Access Key.
 ```
