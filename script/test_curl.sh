@@ -1,4 +1,4 @@
-#API_URL=https://c4z96jmop3.execute-api.us-east-1.amazonaws.com
+#API_URL=https://72nwcbb2b6.execute-api.ap-southeast-1.amazonaws.com
 API_URL=http://127.0.0.1:8000/api
 echo "'$API_URL"/books"'"
 

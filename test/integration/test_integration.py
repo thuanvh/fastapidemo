@@ -59,22 +59,14 @@ def mock_exception_dynamic_configuration(mocker) -> None:
 
 TEST_URL = 'https://72nwcbb2b6.execute-api.ap-southeast-1.amazonaws.com'
 
-def test_handler_200_ok():
-    #mock_dynamic_configuration(mocker, MOCKED_SCHEMA)
-    url = get_stack_output('HttpApiUrl')
-
-    #body = CreateOrderRequest(customer_name=customer_name, order_item_count=order_item_count)
-    #response = call_create_order(generate_api_gw_event(body.model_dump()))
+def test_handler_insert_db_200_ok(rest_api,table_name):
     id = '/books/'+generate_random_string(10)
     author = '/authors/'+generate_random_string(10)
     book = Book(name=generate_random_string(5), id=id, author=author)
-    print(url)
+    print(rest_api)
     print(jsonable_encoder(book))
-    response = requests.post(url=url+"/api/books", json =jsonable_encoder(book))
+    response = requests.post(url=rest_api+"/api/books", json =jsonable_encoder(book))
 
-    # client.post('/api/books', json=book)
-    # response = client.get("/api/books/id1")
-    # assert response
     assert response.status_code == status.HTTP_201_CREATED
     body_dict = response.json()
     assert body_dict['id']
@@ -84,8 +76,7 @@ def test_handler_200_ok():
     assert body_dict['name'] == book.name
     assert body_dict['serial'] == book.serial
     # assert side effect - DynamoDB table
-    #table_name = os.environ['BOOKS_TABLE']
-    table_name = get_table_name()
+
     print(table_name)
     dynamodb_table = boto3.resource('dynamodb').Table(table_name)
     response = dynamodb_table.get_item(Key={'id': id})
@@ -97,33 +88,30 @@ def test_handler_200_ok():
     assert item['name'] == book.name
     assert item['serial'] == book.serial
     
-    response = requests.get(url=url+"/api/"+id)
+def test_handler_insert_get_db_200_ok(rest_api,table_name):
+    id = '/books/'+generate_random_string(10)
+    author = '/authors/'+generate_random_string(10)
+    book = Book(name=generate_random_string(5), id=id, author=author)
+    print(rest_api)
+    print(jsonable_encoder(book))
+    response = requests.post(url=rest_api+"/api/books", json =jsonable_encoder(book))
+    
+    response = requests.get(url=rest_api+"/api/"+id)
     assert response.status_code == status.HTTP_200_OK
     body_dict = response.json()
-    assert body_dict['id']
     assert body_dict['id'] == id
     assert body_dict['author'] == author
     assert body_dict['note'] == book.note
     assert body_dict['name'] == book.name
     assert body_dict['serial'] == book.serial
 
+def test_handler_insert_get_db_422_ok(rest_api):
+    response = requests.post(url=rest_api+"/api/books", json ={
+        "id": "/books/",
+        "author": "/authors/id1",
+        "name": "Hello World",
+        "note": "Good book",
+        "serial": "alk12314123"
+        })
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
-
-
-# def test_handler_bad_request(mocker):
-#     mock_dynamic_configuration(mocker, MOCKED_SCHEMA)
-#     response = call_create_order(generate_api_gw_event({'order_item_count': 5}))
-#     assert response['statusCode'] == HTTPStatus.BAD_REQUEST
-#     body_dict = json.loads(response['body'])
-#     assert body_dict == {}
-
-
-# def test_handler_failed_appconfig_fetch(mocker):
-#     mock_exception_dynamic_configuration(mocker)
-#     customer_name = f'{generate_random_string()}-RanTheBuilder'
-#     order_item_count = 5
-#     body = CreateOrderRequest(customer_name=customer_name, order_item_count=order_item_count)
-#     response = call_create_order(generate_api_gw_event(body.model_dump()))
-#     assert response['statusCode'] == HTTPStatus.INTERNAL_SERVER_ERROR
-#     body_dict = json.loads(response['body'])
-#     assert body_dict == {}

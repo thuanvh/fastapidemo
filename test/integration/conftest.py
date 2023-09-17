@@ -2,15 +2,6 @@ import os
 
 import pytest
 
-# from cdk.service.constants import (
-#     CONFIGURATION_NAME,
-#     ENVIRONMENT,
-#     IDEMPOTENCY_TABLE_NAME_OUTPUT,
-#     POWER_TOOLS_LOG_LEVEL,
-#     POWERTOOLS_SERVICE_NAME,
-#     SERVICE_NAME,
-#     TABLE_NAME_OUTPUT,
-# )
 ERVICE_ROLE_ARN = 'ServiceRoleArn'
 LAMBDA_BASIC_EXECUTION_ROLE = 'AWSLambdaBasicExecutionRole'
 SERVICE_ROLE = 'ServiceRole'
@@ -34,24 +25,30 @@ COMMON_LAYER_BUILD_FOLDER = '.build/common_layer'
 ENVIRONMENT = 'dev'
 CONFIGURATION_NAME = 'my_conf'
 CONFIGURATION_MAX_AGE_MINUTES = '5'  # time to store app config conf in the cache before refetching it
-from test.utils import get_stack_output
+
+from test.utils import get_table_name, get_stack_output
 
 
 @pytest.fixture(scope='module', autouse=True)
 def init():
     os.environ[POWERTOOLS_SERVICE_NAME] = SERVICE_NAME
     os.environ[POWER_TOOLS_LOG_LEVEL] = 'DEBUG'
-    os.environ['REST_API'] = 'https://www.ranthebuilder.cloud/api'
+    os.environ['REST_API'] = get_stack_output('HttpApiUrl')
     os.environ['ROLE_ARN'] = 'arn:partition:service:region:account-id:resource-type:resource-id'
     os.environ['CONFIGURATION_APP'] = SERVICE_NAME
     os.environ['CONFIGURATION_ENV'] = ENVIRONMENT
     os.environ['CONFIGURATION_NAME'] = CONFIGURATION_NAME
     os.environ['CONFIGURATION_MAX_AGE_MINUTES'] = '5'
     os.environ['AWS_DEFAULT_REGION'] = 'ap-southeast-1'  # used for appconfig mocked boto calls
-    # os.environ['TABLE_NAME'] = get_stack_output(TABLE_NAME_OUTPUT)
+    os.environ['TABLE_NAME'] = get_table_name()
     # os.environ['IDEMPOTENCY_TABLE_NAME'] = get_stack_output(IDEMPOTENCY_TABLE_NAME_OUTPUT)
 
 
-# @pytest.fixture(scope='module', autouse=True)
-# def table_name():
-#     return os.environ['TABLE_NAME']
+@pytest.fixture(scope='module', autouse=True)
+def table_name():
+    return os.environ['TABLE_NAME']
+
+
+@pytest.fixture(scope='module', autouse=True)
+def rest_api():
+    return os.environ['REST_API']
