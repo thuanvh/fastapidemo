@@ -62,7 +62,9 @@ TEST_URL = 'https://72nwcbb2b6.execute-api.ap-southeast-1.amazonaws.com'
 def test_handler_insert_db_200_ok(rest_api,table_name):
     id = '/books/'+generate_random_string(10)
     author = '/authors/'+generate_random_string(10)
-    book = Book(name=generate_random_string(5), id=id, author=author)
+    book = Book(name=generate_random_string(5), id=id, author=author,
+                note = generate_random_string(5),
+                serial= generate_random_string(5))
     print(rest_api)
     print(jsonable_encoder(book))
     response = requests.post(url=rest_api+"/api/books", json =jsonable_encoder(book))
@@ -91,7 +93,9 @@ def test_handler_insert_db_200_ok(rest_api,table_name):
 def test_handler_insert_get_db_200_ok(rest_api,table_name):
     id = '/books/'+generate_random_string(10)
     author = '/authors/'+generate_random_string(10)
-    book = Book(name=generate_random_string(5), id=id, author=author)
+    book = Book(name=generate_random_string(5), id=id, author=author,
+                note = generate_random_string(5),
+                serial= generate_random_string(5))
     print(rest_api)
     print(jsonable_encoder(book))
     response = requests.post(url=rest_api+"/api/books", json =jsonable_encoder(book))

@@ -5,6 +5,7 @@ from test.utils import generate_random_string
 
 def create_valid_book():
     return Book(name=generate_random_string(5), id='/books/1', author='/authors/2', note='', serial='')
+
 def test_valid():
     valid_book = create_valid_book()
     
